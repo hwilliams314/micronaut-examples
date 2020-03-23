@@ -26,7 +26,7 @@ public class SurveyController {
     @View("home")
     public FruitChoices home() {
 
-        LOG.info("Sending home page " );
+        if (LOG.isInfoEnabled()) LOG.info("Sending home page " );
         String[] yummyFruits = new String[] {"banana", "mango", "apple", "orange", "grapes", "star"};
         return new FruitChoices(yummyFruits);
 
@@ -44,8 +44,8 @@ public class SurveyController {
                 .filter(e -> e != null)
                 .collect(Collectors.toList());
 
-        LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
-        LOG.info(formData.getUserName() + ": checkedFruits: " + checkedFruits);
+        if (LOG.isInfoEnabled()) LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
+        if (LOG.isInfoEnabled()) LOG.info(formData.getUserName() + ": checkedFruits: " + checkedFruits);
 
         formData.setFruit(checkedFruits);
 

@@ -30,8 +30,7 @@ dependencies {
     implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut:micronaut-http-client"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
-    compile 'com.github.jknack:handlebars:4.1.0'
-    compile 'io.micronaut:micronaut-views'
+    compile 'io.micronaut:micronaut-views-handlebars'
     testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
