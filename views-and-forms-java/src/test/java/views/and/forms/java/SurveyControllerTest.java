@@ -1,10 +1,10 @@
 package views.and.forms.java;
 
 import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.views.ModelAndView;
 import org.junit.jupiter.api.Test;
 import views.and.forms.java.controllers.SurveyController;
 import views.and.forms.java.model.FormData;
-import views.and.forms.java.model.FruitChoices;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -22,51 +22,103 @@ public class SurveyControllerTest {
     SurveyController itemUnderTest;
 
     @Test
-    void testHome() {
+    void testHome_View() {
 
-        FruitChoices expectedFruitChoices = new FruitChoices(new String[] {"banana", "mango", "apple", "orange", "grapes", "star"});
+        ModelAndView actual = itemUnderTest.home();
 
-        FruitChoices actual = itemUnderTest.home();
-
-        assertArrayEquals(actual.getFruits(), expectedFruitChoices.getFruits());
+        assertEquals(actual.getView().get(), "home");
     }
 
     @Test
-    void testThankYou_userName_chocolate() {
+    void testHome_FruitChoices() {
 
-        FormData fakeFormData = new FormData("fakeUser", "like", "banana", "mango", null, null, null, "star", null);
+        FormData fakeFormData =
+                new FormData(new String[] {"banana", "mango", "apple", "orange", "grapes", "star"});
 
-        FormData result = itemUnderTest.processHomeScreen(fakeFormData);
+        ModelAndView actualModelAndView = itemUnderTest.home();
 
-        assertEquals(result.getUserName(), "fakeUser");
-        assertEquals(result.getChocolate(), "like");
-        assertTrue(result.getFruit().indexOf("banana") != -1);
-        assertTrue(result.getFruit().indexOf("mango") != -1);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertArrayEquals(actualFormData.getFruitChoices(), fakeFormData.getFruitChoices());
+    }
+
+    @Test
+    void testProcessHomeScreen_userName() {
+
+        FormData fakeFormData =
+                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertEquals(actualFormData.getUserName(), "fakeUser");
+
+    }
+
+    @Test
+    void testThankYou_invalidUserName() {
+
+        FormData fakeFormData =
+                new FormData("u", "", "like", "banana", "mango", null, null, null, "star", null, null);
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertEquals(actualFormData.getUserName(), fakeFormData.getUserName());
+        assertEquals(actualModelAndView.getView().get(), "home");
+
+    }
+
+    @Test
+    void testThankYou_chocolate() {
+
+        FormData fakeFormData =
+                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertEquals(actualFormData.getChocolate(), "like");
+    }
+
+    @Test
+    void testThankYou_banana() {
+
+        FormData fakeFormData =
+                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertTrue(actualFormData.getFruit().indexOf("banana") != -1);
     }
 
     @Test
     void testThankYou_chosenFruit() {
 
-        FormData fakeFormData = new FormData("fakeUser", "like", "banana", "mango", null, null, null, "star", null);
+        FormData fakeFormData =
+                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
 
-        FormData actual = itemUnderTest.processHomeScreen(fakeFormData);
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
 
         List<String> fakeFruitList = new ArrayList<String>(
                 Arrays.asList("banana", "mango", "star"));
 
-        assertEquals(actual.getFruit().size(), fakeFruitList.size());
-        assertArrayEquals(actual.getFruit().toArray(), fakeFruitList.toArray());
+        assertEquals(actualFormData.getFruit().size(), fakeFruitList.size());
+        assertArrayEquals(actualFormData.getFruit().toArray(), fakeFruitList.toArray());
 
     }
 
     @Test
     void testThankYou_noChosenFruit() {
+        FormData fakeFormData =
+                new FormData("fakeUser", "", "like", null, null, null, null, null, null, null, null);
 
-        FormData fakeFormData = new FormData("fakeUser", "like", null, null, null, null, null, null, null);
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
 
-        FormData actual = itemUnderTest.processHomeScreen(fakeFormData);
-
-        assertEquals(actual.getFruit().size(), 0);
+        assertEquals(actualFormData.getFruit().size(), 0);
     }
 
 }

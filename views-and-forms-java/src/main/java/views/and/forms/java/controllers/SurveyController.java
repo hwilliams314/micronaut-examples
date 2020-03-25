@@ -6,14 +6,16 @@ import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.views.View;
-
+import io.micronaut.validation.validator.Validator;
+import io.micronaut.views.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import views.and.forms.java.model.FormData;
-import views.and.forms.java.model.FruitChoices;
 
+import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,21 +23,22 @@ import java.util.stream.Stream;
 public class SurveyController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SurveyController.class);
+    String[] yummyFruits;
+
+    @Inject
+    Validator validator;
 
     @Get
-    @View("home")
-    public FruitChoices home() {
+    public ModelAndView home() {
 
         if (LOG.isInfoEnabled()) LOG.info("Sending home page " );
-        String[] yummyFruits = new String[] {"banana", "mango", "apple", "orange", "grapes", "star"};
-        return new FruitChoices(yummyFruits);
+        return new ModelAndView("home", new FormData(setUpFruitChoices()));
 
     }
 
-    @View("thankyou")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Post("/survey")
-    public FormData processHomeScreen(@Body FormData formData) {
+    public ModelAndView processHomeScreen(@Body FormData formData) {
 
         String[] allFruits = {formData.getBanana(), formData.getMango(),
                 formData.getApple(), formData.getOrange(), formData.getGrapes(),
@@ -48,8 +51,28 @@ public class SurveyController {
         if (LOG.isInfoEnabled()) LOG.info(formData.getUserName() + ": checkedFruits: " + checkedFruits);
 
         formData.setFruit(checkedFruits);
+        formData.setUserNameErrorMessage("");
+        formData.setFruitChoices(setUpFruitChoices());
 
-        return formData;
+        Set<ConstraintViolation<FormData>> constraintViolations = validator.validate(formData);
+
+        if (LOG.isInfoEnabled()) LOG.info("We have " + constraintViolations.size() + " constraintViolation(s) " );
+
+        if (constraintViolations.size() > 0) {
+            for (ConstraintViolation<FormData> violation : constraintViolations) {
+                if (LOG.isInfoEnabled()) LOG.info(violation.getMessage());
+                formData.setUserNameErrorMessage(violation.getMessage());
+            }
+            return new ModelAndView("home", formData);
+        }
+        else
+          return new ModelAndView("thankyou", formData);
 
     }
+
+    private String[] setUpFruitChoices() {
+        String[] yummyFruits = new String[] {"banana", "mango", "apple", "orange", "grapes", "star"};
+        return yummyFruits;
+    }
+
 }
