@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 public class SurveyController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SurveyController.class);
-    String[] yummyFruits;
+    String[] yummyFruits = new String[] {"banana", "mango", "apple", "orange", "grapes", "star"};
 
     @Inject
     Validator validator;
@@ -32,7 +32,8 @@ public class SurveyController {
     public ModelAndView home() {
 
         if (LOG.isInfoEnabled()) LOG.info("Sending home page " );
-        return new ModelAndView("home", new FormData(setUpFruitChoices()));
+        return new ModelAndView("home", new FormData(yummyFruits));
+//        return new ModelAndView("home", new FormData(setUpFruitChoices()));
 
     }
 
@@ -40,39 +41,41 @@ public class SurveyController {
     @Post("/survey")
     public ModelAndView processHomeScreen(@Body FormData formData) {
 
-        String[] allFruits = {formData.getBanana(), formData.getMango(),
-                formData.getApple(), formData.getOrange(), formData.getGrapes(),
-                formData.getStar()};
-        List<String> checkedFruits = Stream.of(allFruits)
-                .filter(e -> e != null)
-                .collect(Collectors.toList());
+//        String[] allFruits = {formData.getBanana(), formData.getMango(),
+//                formData.getApple(), formData.getOrange(), formData.getGrapes(),
+//                formData.getStar()};
+//        List<String> checkedFruits = Stream.of(allFruits)
+//                .filter(e -> e != null)
+//                .collect(Collectors.toList());
 
-        if (LOG.isInfoEnabled()) LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
-        if (LOG.isInfoEnabled()) LOG.info(formData.getUserName() + ": checkedFruits: " + checkedFruits);
+        if (LOG.isInfoEnabled()) {
+            LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
+            LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
+        }
+//        if (LOG.isInfoEnabled()) LOG.info(formData.getUserName() + ": checkedFruits: " + checkedFruits);
 
-        formData.setFruit(checkedFruits);
+//        formData.setFruit(checkedFruits);
         formData.setUserNameErrorMessage("");
-        formData.setFruitChoices(setUpFruitChoices());
 
         Set<ConstraintViolation<FormData>> constraintViolations = validator.validate(formData);
 
-        if (LOG.isInfoEnabled()) LOG.info("We have " + constraintViolations.size() + " constraintViolation(s) " );
+        if (LOG.isInfoEnabled()) {
+            LOG.info("We have " + constraintViolations.size() + " constraintViolation(s) " );
+        }
 
         if (constraintViolations.size() > 0) {
             for (ConstraintViolation<FormData> violation : constraintViolations) {
-                if (LOG.isInfoEnabled()) LOG.info(violation.getMessage());
+                if (LOG.isInfoEnabled()) {
+                    LOG.info(violation.getMessage());
+                }
                 formData.setUserNameErrorMessage(violation.getMessage());
             }
+            formData.setFruitChoices(yummyFruits);
             return new ModelAndView("home", formData);
         }
         else
           return new ModelAndView("thankyou", formData);
 
-    }
-
-    private String[] setUpFruitChoices() {
-        String[] yummyFruits = new String[] {"banana", "mango", "apple", "orange", "grapes", "star"};
-        return yummyFruits;
     }
 
 }

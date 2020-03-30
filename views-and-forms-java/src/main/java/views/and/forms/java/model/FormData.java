@@ -1,7 +1,7 @@
 package views.and.forms.java.model;
 
 import io.micronaut.core.annotation.Introspected;
-import java.util.List;
+
 import javax.validation.constraints.*;
 
 @Introspected
@@ -11,14 +11,14 @@ public class FormData {
     private String userName;
     private String userNameErrorMessage;
     private String chocolate;
-    private String banana;
-    private String mango;
-    private String apple;
-    private String orange;
-    private String grapes;
-    private String star;
-    private List<String> fruit;
-    private String[] fruitChoices;
+//    private String banana;
+//    private String mango;
+//    private String apple;
+//    private String orange;
+//    private String grapes;
+//    private String star;
+    private String[] fruitChosen = {};
+    private String[] fruitChoices = {};
 
     public FormData() {
     }
@@ -27,17 +27,20 @@ public class FormData {
         this.fruitChoices = fruitChoices;
     }
 
-    public FormData(@Size(min = 2, message = "Name must be at least 2 characters long.") String userName, String userNameErrorMessage, String chocolate, String banana, String mango, String apple, String orange, String grapes, String star, List<String> fruit, String[] fruitChoices) {
+    public FormData(@Size(min = 2, message = "Name must be at least 2 characters long.")
+                            String userName, String userNameErrorMessage, String chocolate, String[] fruitChosen, String[] fruitChoices) {
+//    public FormData(@Size(min = 2, message = "Name must be at least 2 characters long.")
+//                            String userName, String userNameErrorMessage, String chocolate, String banana, String mango, String apple, String orange, String grapes, String star, String[] fruit, String[] fruitChoices) {
         this.userName = userName;
         this.userNameErrorMessage = userNameErrorMessage;
         this.chocolate = chocolate;
-        this.banana = banana;
-        this.mango = mango;
-        this.apple = apple;
-        this.orange = orange;
-        this.grapes = grapes;
-        this.star = star;
-        this.fruit = fruit;
+//        this.banana = banana;
+//        this.mango = mango;
+//        this.apple = apple;
+//        this.orange = orange;
+//        this.grapes = grapes;
+//        this.star = star;
+        this.fruitChosen = fruitChosen;
         this.fruitChoices = fruitChoices;
     }
 
@@ -63,60 +66,60 @@ public class FormData {
         this.chocolate = chocolate;
     }
 
-    public String getBanana() {
-        return banana;
+//    public String getBanana() {
+//        return banana;
+//    }
+//
+//    public void setBanana(String banana) {
+//        this.banana = banana;
+//    }
+//
+//    public String getMango() {
+//        return mango;
+//    }
+//
+//    public void setMango(String mango) {
+//        this.mango = mango;
+//    }
+//
+//    public String getApple() {
+//        return apple;
+//    }
+//
+//    public void setApple(String apple) {
+//        this.apple = apple;
+//    }
+//
+//    public String getOrange() {
+//        return orange;
+//    }
+//
+//    public void setOrange(String orange) {
+//        this.orange = orange;
+//    }
+//
+//    public String getGrapes() {
+//        return grapes;
+//    }
+//
+//    public void setGrapes(String grapes) {
+//        this.grapes = grapes;
+//    }
+//
+//    public String getStar() {
+//        return star;
+//    }
+//
+//    public void setStar(String star) {
+//        this.star = star;
+//    }
+
+    public String[] getFruitChosen() {
+        return fruitChosen;
     }
 
-    public void setBanana(String banana) {
-        this.banana = banana;
-    }
-
-    public String getMango() {
-        return mango;
-    }
-
-    public void setMango(String mango) {
-        this.mango = mango;
-    }
-
-    public String getApple() {
-        return apple;
-    }
-
-    public void setApple(String apple) {
-        this.apple = apple;
-    }
-
-    public String getOrange() {
-        return orange;
-    }
-
-    public void setOrange(String orange) {
-        this.orange = orange;
-    }
-
-    public String getGrapes() {
-        return grapes;
-    }
-
-    public void setGrapes(String grapes) {
-        this.grapes = grapes;
-    }
-
-    public String getStar() {
-        return star;
-    }
-
-    public void setStar(String star) {
-        this.star = star;
-    }
-
-    public List<String> getFruit() {
-        return fruit;
-    }
-
-    public void setFruit(List<String> fruit) {
-        this.fruit = fruit;
+    public void setFruitChosen(String[] fruitChosen) {
+        this.fruitChosen = fruitChosen;
     }
 
     public String[] getFruitChoices() { return fruitChoices; }
