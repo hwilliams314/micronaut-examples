@@ -46,8 +46,6 @@ public class SurveyControllerTest {
     void testProcessHomeScreen_userName() {
 
         FormData fakeFormData = new FormData("fakeUser", "", "like",  null, null);
-//        FormData fakeFormData =
-//                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
 
         ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
         FormData actualFormData = (FormData) actualModelAndView.getModel().get();
@@ -73,9 +71,6 @@ public class SurveyControllerTest {
     void testThankYou_chocolate() {
 
         FormData fakeFormData = new FormData("fakeUser", "", "like",  null, null);
-
-//        FormData fakeFormData =
-//                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
 
         ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
         FormData actualFormData = (FormData) actualModelAndView.getModel().get();
@@ -116,9 +111,6 @@ public class SurveyControllerTest {
     void testThankYou_noChosenFruit() {
         String[] fakeFruitArray = new String[]{};
         FormData fakeFormData = new FormData("fakeUser", "", "like", null, fakeFruitArray );
-
-//        FormData fakeFormData =
-//                new FormData("fakeUser", "", "like", null, null, null, null, null, null, null, null);
 
         ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
         FormData actualFormData = (FormData) actualModelAndView.getModel().get();
