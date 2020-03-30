@@ -41,84 +41,89 @@ public class SurveyControllerTest {
 
         assertArrayEquals(actualFormData.getFruitChoices(), fakeFormData.getFruitChoices());
     }
-//
-//    @Test
-//    void testProcessHomeScreen_userName() {
-//
+
+    @Test
+    void testProcessHomeScreen_userName() {
+
+        FormData fakeFormData = new FormData("fakeUser", "", "like",  null, null);
 //        FormData fakeFormData =
 //                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
-//
-//        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
-//        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
-//
-//        assertEquals(actualFormData.getUserName(), "fakeUser");
-//
-//    }
-//
-//    @Test
-//    void testThankYou_invalidUserName() {
-//
-//        FormData fakeFormData =
-//                new FormData("u", "", "like", "banana", "mango", null, null, null, "star", null, null);
-//
-//        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
-//        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
-//
-//        assertEquals(actualFormData.getUserName(), fakeFormData.getUserName());
-//        assertEquals(actualModelAndView.getView().get(), "home");
-//
-//    }
-//
-//    @Test
-//    void testThankYou_chocolate() {
-//
-//        FormData fakeFormData =
-//                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
-//
-//        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
-//        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
-//
-//        assertEquals(actualFormData.getChocolate(), "like");
-//    }
-//
-//    @Test
-//    void testThankYou_banana() {
-//
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertEquals(actualFormData.getUserName(), "fakeUser");
+
+    }
+
+    @Test
+    void testThankYou_invalidUserName() {
+
+        FormData fakeFormData = new FormData("u", "", "like",  null, null);
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertEquals(actualFormData.getUserName(), fakeFormData.getUserName());
+        assertEquals(actualModelAndView.getView().get(), "home");
+
+    }
+
+    @Test
+    void testThankYou_chocolate() {
+
+        FormData fakeFormData = new FormData("fakeUser", "", "like",  null, null);
+
 //        FormData fakeFormData =
 //                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
-//
-//        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
-//        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
-//
-//        assertTrue(actualFormData.getFruit().indexOf("banana") != -1);
-//    }
-//
-//    @Test
-//    void testThankYou_chosenFruit() {
-//
-//        FormData fakeFormData =
-//                new FormData("fakeUser", "", "like", "banana", "mango", null, null, null, "star", null, null);
-//
-//        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
-//        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
-//
-//        List<String> fakeFruitList = new ArrayList<String>(
-//                Arrays.asList("banana", "mango", "star"));
-//
-//        assertEquals(actualFormData.getFruit().size(), fakeFruitList.size());
-//        assertArrayEquals(actualFormData.getFruit().toArray(), fakeFruitList.toArray());
-//
-//    }
-//
-//    @Test
-//    void testThankYou_noChosenFruit() {
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertEquals(actualFormData.getChocolate(), "like");
+    }
+
+    @Test
+    void testThankYou_banana() {
+
+        String[] fakeFruitArray = new String[]{"banana"};
+        FormData fakeFormData = new FormData("fakeUser", "", "like", null, fakeFruitArray );
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertArrayEquals(actualFormData.getFruitChoices(), fakeFruitArray);
+    }
+
+    @Test
+    void testThankYou_chosenFruit() {
+
+        String[] fakeFruitArray = new String[]{"banana", "mango", "star"};
+        FormData fakeFormData = new FormData("fakeUser", "", "like", null, fakeFruitArray );
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        List<String> fakeFruitList = new ArrayList<String>(
+                Arrays.asList("banana", "mango", "star"));
+
+        assertEquals(actualFormData.getFruitChoices().length, fakeFruitArray.length);
+        assertArrayEquals(actualFormData.getFruitChoices(), fakeFruitArray);
+
+    }
+
+    @Test
+    void testThankYou_noChosenFruit() {
+        String[] fakeFruitArray = new String[]{};
+        FormData fakeFormData = new FormData("fakeUser", "", "like", null, fakeFruitArray );
+
 //        FormData fakeFormData =
 //                new FormData("fakeUser", "", "like", null, null, null, null, null, null, null, null);
-//
-//        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
-//        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
-//
-//        assertEquals(actualFormData.getFruit().size(), 0);
-//    }
+
+        ModelAndView actualModelAndView = itemUnderTest.processHomeScreen(fakeFormData);
+        FormData actualFormData = (FormData) actualModelAndView.getModel().get();
+
+        assertEquals(actualFormData.getFruitChoices().length, 0);
+    }
 
 }
