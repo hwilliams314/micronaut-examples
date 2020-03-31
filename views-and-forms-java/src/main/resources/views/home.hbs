@@ -33,9 +33,10 @@
         </div>
         <div class="questions">What is your favorite fruit? (choose up to 3)
             {{#each fruitChoices}}
-                <input type="checkbox" id={{this}} name=fruitChoices value={{this}}>
+                <input type="checkbox" id={{this}} name=fruitChosen value={{this}}>
                 <label for={{this}}>{{this}}</label>
             {{/each}}
+            <p class="error">{{fruitChosenErrorMessage}}</p>
             <br>
         </div>
         <div>

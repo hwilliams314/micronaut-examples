@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.validation.validator.Validator;
 import io.micronaut.views.ModelAndView;
+import io.micronaut.views.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import views.and.forms.java.model.FormData;
@@ -20,16 +21,16 @@ import java.util.Set;
 public class SurveyController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SurveyController.class);
-    String[] fruitOptions = new String[] {"banana", "mango", "apple", "orange", "grapes", "star"};
 
     @Inject
     Validator validator;
 
     @Get
-    public ModelAndView home() {
+    @View("home")
+    public FormData home() {
 
         if (LOG.isInfoEnabled()) LOG.info("Sending home page " );
-        return new ModelAndView("home", new FormData(fruitOptions));
+        return new FormData();
 
     }
 
@@ -38,7 +39,6 @@ public class SurveyController {
     public ModelAndView processHomeScreen(@Body FormData formData) {
 
         if (LOG.isInfoEnabled()) {
-            LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
             LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
         }
 
@@ -57,11 +57,11 @@ public class SurveyController {
                 }
                 formData.setUserNameErrorMessage(violation.getMessage());
             }
-            formData.setFruitChoices(fruitOptions);
             return new ModelAndView("home", formData);
         }
-        else
-          return new ModelAndView("thankyou", formData);
+        else {
+            return new ModelAndView("thankyou", formData);
+        }
 
     }
 
