@@ -16,6 +16,7 @@ import views.and.forms.java.model.FormData;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -44,8 +45,6 @@ public class SurveyController {
             LOG.info(formData.getUserName() + ": has a chocolate preference of: " + formData.getChocolate());
         }
 
-//        formData.setUserNameErrorMessage("");
-
         Set<ConstraintViolation<FormData>> constraintViolations = validator.validate(formData);
 
         if (LOG.isInfoEnabled()) {
@@ -59,8 +58,8 @@ public class SurveyController {
                     LOG.info(violation.getMessage());
                 }
                 errors.add(violation.getMessage());
-//                formData.setUserNameErrorMessage(violation.getMessage());
             }
+            Collections.reverse(errors);
             formData.setErrors(errors);
             return new ModelAndView("home", formData);
         }
