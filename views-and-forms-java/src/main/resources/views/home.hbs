@@ -20,7 +20,6 @@
         <div class="subtitle">Welcome to our example survey</div>
         <div class="questions">What is your name?
             <input class="user-name" name="userName" value={{userName}}></input>
-            <p class="error">{{userNameErrorMessage}}</p>
         </div>
         <div class="questions">How do you feel about chocolate?
             <input type="radio" id="like-chocolate" name="chocolate" value="like" checked>
@@ -36,8 +35,12 @@
                 <input type="checkbox" id={{this}} name=fruitChosen value={{this}}>
                 <label for={{this}}>{{this}}</label>
             {{/each}}
-            <p class="error">{{fruitChosenErrorMessage}}</p>
             <br>
+        </div>
+        <div>
+            {{#each errors}}
+                <p class="error">{{this}}</p>
+            {{/each}}
         </div>
         <div>
             <input class="submit-button" type="submit" value="Submit">

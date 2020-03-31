@@ -11,20 +11,21 @@ public class FormData {
 
     @Size(min=2, message="Name must be at least 2 characters long.")
     private String userName;
-    private String userNameErrorMessage;
+//    private String userNameErrorMessage;
     private String chocolate;
     private String[] fruitChoices = {"banana", "mango", "apple", "orange", "grapes", "star"};;
     @Size(max=3, message="Please choose a maximum of 3 fruits.")
     private List<String> fruitChosen = new ArrayList<String>();
-    private String fruitChosenErrorMessage;
+//    private String fruitChosenErrorMessage;
+    private List<String> errors = new ArrayList<String>();
 
     public FormData() {
     }
 
-
-    public FormData(String[] fruitChoices) {
-        this.fruitChoices = fruitChoices;
-    }
+//
+//    public FormData(String[] fruitChoices) {
+//        this.fruitChoices = fruitChoices;
+//    }
 
     public String getUserName() {
         return userName;
@@ -33,14 +34,14 @@ public class FormData {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
-    public String getUserNameErrorMessage() {
-        return userNameErrorMessage;
-    }
-
-    public void setUserNameErrorMessage(String userNameErrorMessage) {
-        this.userNameErrorMessage = userNameErrorMessage;
-    }
+//
+//    public String getUserNameErrorMessage() {
+//        return userNameErrorMessage;
+//    }
+//
+//    public void setUserNameErrorMessage(String userNameErrorMessage) {
+//        this.userNameErrorMessage = userNameErrorMessage;
+//    }
 
     public String getChocolate() {
         return chocolate;
@@ -65,13 +66,20 @@ public class FormData {
     public void setFruitChoices(String[] fruitChoices) {
         this.fruitChoices = fruitChoices;
     }
+//
+//    public String getFruitChosenErrorMessage() {
+//        return fruitChosenErrorMessage;
+//    }
+//
+//    public void setFruitChosenErrorMessage(String fruitChosenErrorMessage) {
+//        this.fruitChosenErrorMessage = fruitChosenErrorMessage;
+//    }
 
-    public String getFruitChosenErrorMessage() {
-        return fruitChosenErrorMessage;
+    public List<String> getErrors() {
+        return errors;
     }
 
-    public void setFruitChosenErrorMessage(String fruitChosenErrorMessage) {
-        this.fruitChosenErrorMessage = fruitChosenErrorMessage;
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
-
 }
