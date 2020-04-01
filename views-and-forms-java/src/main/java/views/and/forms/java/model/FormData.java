@@ -56,7 +56,11 @@ public class FormData {
         return errors;
     }
 
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
+    public void addError(String error) {
+        this.errors.add(error);
+    }
+
+    public void clearErrors() {
+        this.errors.clear();
     }
 }

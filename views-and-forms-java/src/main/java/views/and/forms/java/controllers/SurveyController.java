@@ -9,7 +9,6 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Error;
 import io.micronaut.validation.validator.Validator;
-import io.micronaut.views.ModelAndView;
 import io.micronaut.views.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +18,7 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Controller("/")
 public class SurveyController {
@@ -41,68 +35,43 @@ public class SurveyController {
         if (LOG.isInfoEnabled()) {
             LOG.info("Sending home page ");
         }
+
         return new FormData();
 
     }
 
+    @View("thankyou")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Post("/survey")
-    public ModelAndView processHomeScreen(@Body @Valid FormData formData) {
+    public FormData processHomeScreen(@Body @Valid FormData formData) {
 
         if (LOG.isInfoEnabled()) {
             LOG.info( "{} has a chocolate preference of: {}", formData.getUserName(), formData.getChocolate());
         }
 
-        Set<ConstraintViolation<FormData>> constraintViolations = validator.validate(formData);
+        formData.clearErrors();
 
-        if (constraintViolations.size() > 0) {
-            List<String> errors = new ArrayList<String>();
-            for (ConstraintViolation<FormData> violation : constraintViolations) {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info(violation.getMessage());
-                }
-                errors.add(violation.getMessage());
-            }
-            Collections.reverse(errors);
-            formData.setErrors(errors);
-            return new ModelAndView("home", formData);
-        }
-        else {
-            return new ModelAndView("thankyou", formData);
-        }
+        return formData;
 
     }
 
     @View("home")
     @Error(exception = ConstraintViolationException.class)
-    public FormData constraintsErrors(HttpRequest request, ConstraintViolationException cv) {
-
-        if (LOG.isInfoEnabled()) {
-            LOG.info("In @Error meth ");
-        }
+    public FormData handleInvalidInput(HttpRequest<FormData> request, ConstraintViolationException cv) {
 
         Set<ConstraintViolation<?>> constraintViolations = cv.getConstraintViolations();
-        AtomicReference<FormData> formDataToReturn = new AtomicReference<>(new FormData());
-        Optional<FormData> optionalFormData = request.getBody(FormData.class);
 
-        optionalFormData.ifPresent(formData -> {
-            List<String> errors = new ArrayList<String>();
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Form validation failed with {} error(s)", constraintViolations.size());
+        }
 
-            for (ConstraintViolation<?> violation : constraintViolations) {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Error: {}", violation.getMessage());
-                }
-                errors.add(violation.getMessage());
+        FormData model = request.getBody(FormData.class).orElse(new FormData());
 
-            }
-            Collections.reverse(errors);
-            formData.setErrors(errors);
-            formDataToReturn.set(formData);
-
+        constraintViolations.forEach(constraintViolation -> {
+            model.addError(constraintViolation.getMessage());
         });
 
-        return formDataToReturn.get();
-
+        return model;
     }
 
 }
