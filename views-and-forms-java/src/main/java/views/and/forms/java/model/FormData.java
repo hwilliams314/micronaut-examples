@@ -20,7 +20,6 @@ public class FormData {
     public FormData() {
     }
 
-
     public String getUserName() {
         return userName;
     }
